@@ -1,0 +1,37 @@
+import plotly.express as px
+import pandas as pd
+
+# 1. The Data
+data = [
+    {"Date": "1871", "Event": "German Unification", "Category": "Nationalism", "Description": "German Empire forms; France loses Alsace-Lorraine."},
+    {"Date": "1882", "Event": "Triple Alliance", "Category": "Alliances", "Description": "Germany, Austria-Hungary, and Italy form a pact."},
+    {"Date": "1890", "Event": "Naval Race Begins", "Category": "Militarism", "Description": "Germany challenges British naval supremacy."},
+    {"Date": "1907", "Event": "Triple Entente", "Category": "Alliances", "Description": "Britain, France, and Russia align against Germany."},
+    {"Date": "1908", "Event": "Bosnian Crisis", "Category": "Imperialism", "Description": "Austria annexes Bosnia, infuriating Serbia and Russia."},
+    {"Date": "1914-06-28", "Event": "Assassination", "Category": "Spark", "Description": "Franz Ferdinand killed in Sarajevo by Gavrilo Princip."},
+    {"Date": "1914-07-05", "Event": "The Blank Check", "Category": "Alliances", "Description": "Germany gives Austria unconditional support."},
+    {"Date": "1914-07-28", "Event": "War Declared", "Category": "Conflict", "Description": "Austria-Hungary declares war on Serbia."},
+    {"Date": "1914-08-01", "Event": "Russia/France Join", "Category": "Alliances", "Description": "Germany declares war on Russia and France."},
+    {"Date": "1914-08-04", "Event": "Invasion of Belgium", "Category": "Militarism", "Description": "Germany invades Belgium; Britain declares war."}
+]
+
+df = pd.DataFrame(data)
+
+# 2. Create the Figure
+fig = px.scatter(df, x="Date", y=[1]*len(df), text="Event", 
+                 hover_data={"Description": True, "Category": True, "Date": True},
+                 title="The Road to World War I: Interactive Timeline",
+                 labels={"y": ""},
+                 color="Category")
+
+# Styling
+fig.update_traces(marker=dict(size=25, line=dict(width=2, color='DarkSlateGrey')), 
+                  textposition='top center')
+fig.update_yaxes(showticklabels=False, showgrid=False, zeroline=False)
+fig.update_layout(height=500, template="plotly_white")
+
+# 3. GENERATE THE HTML FILE
+# 'include_plotlyjs=True' makes the file standalone (it will work offline)
+fig.write_html("ww1_timeline.html", include_plotlyjs='cdn')
+
+print("Success! 'ww1_timeline.html' has been created.")
